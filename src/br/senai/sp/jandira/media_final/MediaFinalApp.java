@@ -3,12 +3,12 @@ package br.senai.sp.jandira.media_final;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.Optional;
 
 public class MediaFinalApp extends Application {
 
@@ -101,7 +101,95 @@ public class MediaFinalApp extends Application {
         stage.show();
 
         // eventos de clique dos botões
-        buttonCalcularMedia.addEventHandler();
+        buttonCalcularMedia.setOnAction(click -> {
+            System.out.println("Botão clicado!");
+            String nomeDigitado = textFieldNome.getText();
+            labelAluno.setText("Nome do aluno: " + nomeDigitado);
+
+
+
+
+
+            // Calcular Média
+            // Obter as notas
+
+            //Criar um (array) vetor de notas
+            double[] notas = new double[4];
+            String[] notasStr = new String[4];
+
+            notasStr[0] = textFieldNota1.getText();
+            notas[0] = Double.parseDouble(notasStr[0]);
+
+             notasStr[1] = textFieldNota2.getText();
+            notas[1] = Double.parseDouble(notasStr[1]);
+
+             notasStr[2] = textFieldNota3.getText();
+            notas[2] = Double.parseDouble(notasStr[2]);
+
+             notasStr[3] = textFieldNota4.getText();
+            notas[3] = Double.parseDouble(notasStr[3]);
+
+            //Uso de loop while (enquanto)
+            int volta = 0;
+            double mediaFinal = 0;
+            while (volta < notas.length){
+                mediaFinal = mediaFinal + notas[volta];
+                volta = volta + 1;
+            }
+            double mediaFinal1;
+
+             mediaFinal = mediaFinal / notas.length;
+            String mediaFinalStr = String.format("%.2f" , mediaFinal);
+
+
+           labelMediaFinal.setText("Média final: " + mediaFinalStr);
+
+           // Dizer a situação do aluno
+
+            String estadoDoAluno;
+            if (mediaFinal <4){
+                estadoDoAluno = "Reprovado";
+            } else if (mediaFinal >= 5){
+                estadoDoAluno = "Aprovado";
+            }else
+                estadoDoAluno = "Recuperação";
+
+            labelSituacao.setText("Situação: " + estadoDoAluno);
+
+
+        });
+
+        buttonLimpar.setOnAction(click ->{
+            textFieldNome.clear();
+            textFieldNota1.setText("");
+            textFieldNota2.clear();
+            textFieldNota3.clear();
+            textFieldNota4.clear();
+
+            labelAluno.setText("Nome do aluno: ");
+            labelMediaFinal.setText("Media final: ");
+            labelSituacao.setText("Situação: ");
+
+            textFieldNome.requestFocus();
+
+
+
+        });
+
+        buttonSair.setOnAction(click ->{
+            Alert alerta = new Alert(Alert.AlertType.CONFIRMATION, "Fechar aplication", ButtonType.YES, ButtonType.NO);
+           Optional<ButtonType> botaoPressionado = alerta.showAndWait();
+           if (botaoPressionado.get() == ButtonType.YES){
+               Alert alerta2 = new Alert(Alert.AlertType.INFORMATION, "Até logo");
+               alerta2.showAndWait();
+               System.exit(0);
+           }
+
+
+
+
+           // System.exit(0);
+        });
     }
 }
 
